@@ -13,8 +13,8 @@ Prefix bot: -
   - -trad (Translates the text into the informed language)
   
  **Anilist**
-  - -anilist nameUser anime (Random anime for PTW user list)
-  - -anilist nameUser manga (Random manga for PTR user list)
+  - -anilist nameUser anime (Random anime from the user's PTW list)
+  - -anilist nameUser manga (Random manga from the user's PTR list)
 
 
 ### How to run
