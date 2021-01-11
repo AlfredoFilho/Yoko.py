@@ -4,6 +4,8 @@ Discord bot in Python
 **Commands**<br />
 Prefix bot: -
 <br /><br />
+**Help**<br />
+  - -ajuda
 
 **Images** <br />
   - -topng (Convert image JPG to PNG)<br />
