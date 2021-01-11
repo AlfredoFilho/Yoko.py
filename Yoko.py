@@ -227,5 +227,5 @@ url_ultimo_arq = None
 client.remove_command('help')
 
 #Iniciar Bot
-TOKEN = 'yourApplicationID'
+TOKEN = 'yourTokenBot'
 client.run(TOKEN)
