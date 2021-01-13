@@ -27,7 +27,7 @@ Install requirements
 ```terminal
 pip3 install -r requirements.txt
 ```
-Add your [Token Discord Bot](https://discord.com/developers/applications/) in file Yoko.bot
+Add your [Token Discord Bot](https://discord.com/developers/applications/) in file Yoko.py line 230
 ```terminal
 TOKEN = 'yourTokenBot'
 ```
