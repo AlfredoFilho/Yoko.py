@@ -1,17 +1,17 @@
 # Yoko - A discord bot in Python
 Prefix: **-**
 
-## **Commands**<br /><br />
+### **Commands**<br /><br />
 ```Terminal
 -ajuda -> help
 
--tojpg -> (Convert image JPG to PNG)
--topng -> (Convert image PNG to JPG)
+-tojpg -> (Convert upload image JPG to PNG)
+-topng -> (Convert upload image PNG to JPG)
 
--trad -> (Translates the text into the informed language)
+-trad *language* *text* -> (Translates the text into the informed language)
 
- -anilist nameUser anime -> (Random anime from the user's PTW list)
- -anilist nameUser manga -> (Random manga from the user's PTR list)
+-anilist *nameUser* anime -> (Random anime from the user's PTW list)
+-anilist *nameUser* manga -> (Random manga from the user's PTR list)
 ```
 
 ### How to run
