@@ -1,9 +1,9 @@
 # Yoko
 Discord bot in Python
 
-**Commands**<br />
-Prefix bot: -
-<br /><br />
+Prefix: **-**
+
+## **Commands**<br /><br />
 **Help**<br />
   - -ajuda
 
