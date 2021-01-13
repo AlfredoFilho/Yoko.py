@@ -1,23 +1,18 @@
-# Yoko
-Discord bot in Python
-
+# Yoko - A discord bot in Python
 Prefix: **-**
 
 ## **Commands**<br /><br />
-**Help**<br />
-  - -ajuda
+```Terminal
+-ajuda -> help
 
-**Images** <br />
-  - -topng (Convert image JPG to PNG)<br />
-  - -tojpg (Convert image PNG to JPG)
-  
-**Texts**
-  - -trad (Translates the text into the informed language)
-  
- **Anilist**
-  - -anilist nameUser anime (Random anime from the user's PTW list)
-  - -anilist nameUser manga (Random manga from the user's PTR list)
+-tojpg -> (Convert image JPG to PNG)
+-topng -> (Convert image PNG to JPG)
 
+-trad -> (Translates the text into the informed language)
+
+ -anilist nameUser anime -> (Random anime from the user's PTW list)
+ -anilist nameUser manga -> (Random manga from the user's PTR list)
+```
 
 ### How to run
 Download project
