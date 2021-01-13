@@ -122,7 +122,7 @@ Vai escolher um randômico da lista de PTW do Zezin no Anilist
     else:
 
         embedAjuda = discord.Embed(
-            title = 'Convite1',
+            title = 'Convite',
             url = f"https://discordapp.com/oauth2/authorize?client_id={client.user.id}&scope=bot&permissions=125952",
             colour = discord.Colour(0xFF0059)
         )

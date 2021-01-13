@@ -1,18 +1,37 @@
 # Yoko - A discord bot in Python
 Prefix: **-**
 
+<<<<<<< HEAD
+### **Commands**
+=======
 ### **Commands**<br /><br />
+>>>>>>> b9af2ff289571e86d9f747032698b3d782f9bdf9
 ```Terminal
--ajuda -> help
+-ajuda -> show the commands available
+-ping -> ping
+
+<<<<<<< HEAD
+-purge *number* (Delete a number of messages)
 
 -tojpg -> (Convert upload image JPG to PNG)
 -topng -> (Convert upload image PNG to JPG)
 
 -trad *language* *text* -> (Translates the text into the informed language)
 
+=======
+-tojpg -> (Convert upload image JPG to PNG)
+-topng -> (Convert upload image PNG to JPG)
+
+-trad *language* *text* -> (Translates the text into the informed language)
+
+>>>>>>> b9af2ff289571e86d9f747032698b3d782f9bdf9
 -anilist *nameUser* anime -> (Random anime from the user's PTW list)
 -anilist *nameUser* manga -> (Random manga from the user's PTR list)
 ```
+
+Example:
+|  <img src="example.png">  |
+
 
 ### How to run
 Download project
