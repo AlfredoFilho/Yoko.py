@@ -159,7 +159,9 @@ Lembrete: -topng converte JPG para PNG
                 sizeImagem = int(os.stat('imagemPNG.png').st_size)
 
                 if sizeImagem > 8000000:
-                    await ctx.channel.send('O arquivo final passou de 8mb que é limite do Discord, tente outra imagem.')
+                    await ctx.channel.send('**O arquivo após a conversão passou de 8mb, que é o limite do Discord, tente outra imagem.**')
+                    os.remove('imagemJPG.jpg')
+                    os.remove('imagemPNG.png')
 
                 else:
                     
