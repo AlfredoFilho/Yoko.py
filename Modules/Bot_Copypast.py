@@ -1,6 +1,7 @@
 #!/bin/bash/python3
 #coding: utf-8
 
+import os
 import math
 import json
 import base64
@@ -66,12 +67,40 @@ async def listCpsCommand(ctx, dictCopypasts):
         await ctx.send(embed=embedCopypast)
 
 
-async def addcpCommand(ctx, nameCP, textCP):
+async def addcpCommand(ctx, nameCP, textCP, pathToCSV):
 
     data = base64.b64encode(bytes(textCP, 'utf-8'))
-    copypastAddRow = nameCP + "," + data.decode() + "\n"
+    # copypastAddRow = nameCP + "," + data.decode() + "\n"
+    copypastAddRow = nameCP + "," + data.decode() + "," + str(ctx.message.author.id) + "\n"
 
-    with open('files/copypast.csv', 'a') as fd:
+    with open(pathToCSV, 'a') as fd:
         fd.write(copypastAddRow)
 
     await ctx.send("**Adicionado.**")
+
+
+async def deletecpCommand(ctx, nameCP, update_aliases, _copypast, pathToCSV):
+
+    df = pd.read_csv(pathToCSV)
+
+    if nameCP not in df.nameCP.values:
+        await ctx.send("Essa copypast não existe.")
+    
+    else:
+        for x in range(len(df.nameCP)):
+            if nameCP == df.nameCP[x]:
+                if ctx.message.author.id != int(df.useWhoAdded[x]):
+                    await ctx.send("Você só pode remover as que adicionou.")
+                
+                else:
+                    newDF = df.drop(df.index[x])
+                    
+                    # Remove old csv
+                    os.remove(pathToCSV)
+
+                    # Save new csv
+                    newDF.to_csv(pathToCSV, encoding='utf-8', index=False)
+
+                    update_aliases(_copypast, nameCP, action="remove")
+
+                    await ctx.send(f"A copypast {nameCP} foi deletada.")

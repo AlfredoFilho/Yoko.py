@@ -12,6 +12,7 @@ def getJsonData(pathToJsonFile):
     return jsonData
 
 
-def getDictFromCsv(pathToCsv):
+def getDictFromCsv(pathToCsv, nameKey, nameValue):
     
-    return pd.read_csv(pathToCsv, header=None, index_col=0, squeeze=True).to_dict()    
+    df = pd.read_csv(pathToCsv)
+    return pd.Series(df[nameValue].values,index=df[nameKey]).to_dict()

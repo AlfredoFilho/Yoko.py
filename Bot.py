@@ -71,6 +71,7 @@ async def _purge(ctx, quant: int):
     await Bot_Others.purgeCommand(ctx, quant)
 
 
+# Handle Missing Argument for purge
 @_purge.error
 async def purge_error(ctx, error):
 
@@ -88,15 +89,21 @@ async def rps(ctx):
 
 
 # Command copypast - send a copypast from files/copypast.csv
-dictCopypasts = getDictFromCsv('files/copypast.csv')
-aliasesCopypasts = list(dictCopypasts.keys())
+dictCopypasts = None
+aliasesCopypasts = None
 
-@bot.command(aliases=aliasesCopypasts)
+def updateVarAliasesCopypasts():
+
+    globals()["dictCopypasts"] = getDictFromCsv(pathToCsv='files/copypast.csv', nameKey="nameCP", nameValue="textCP")
+    globals()["aliasesCopypasts"] = list(dictCopypasts.keys())
+
+updateVarAliasesCopypasts()
+
+@bot.command(aliases=globals()["aliasesCopypasts"])
 @commands.bot_has_permissions(manage_messages=True)
 async def _copypast(ctx):
 
-    global dictCopypasts
-    await Bot_Copypast.copypastCommand(ctx, dictCopypasts)
+    await Bot_Copypast.copypastCommand(ctx, globals()["dictCopypasts"])
 
 
 # Command listacp - list of copypasts availabre from files/copypast.csv
@@ -106,12 +113,19 @@ async def listarcp(ctx):
     await Bot_Copypast.listCpsCommand(ctx, dictCopypasts)
 
 
-# Function to update aliases of command "_copypast" after add new copypast with addcp command
-def update_aliases(command, *aliases):
+# Function to update aliases of command "_copypast" after add new copypast or delete copypast
+def update_aliases(command, aliases, action):
     
     bot.remove_command(command.name)
-    command.aliases.extend(aliases)
+
+    if action == "update":
+        command.aliases.extend(aliases)
+    
+    else:
+        command.aliases.remove(aliases)
+
     bot.add_command(command)
+    updateVarAliasesCopypasts()
 
 
 # Command to add new copypast
@@ -125,28 +139,33 @@ async def addcp(ctx, nameCP, *, textCP):
 
         reservedWordsFromOtherCommands = list(bot.all_commands.keys())
 
-        global aliasesCopypasts
-        global dictCopypasts
+        updateVarAliasesCopypasts()
 
-        if nameCP not in aliasesCopypasts and nameCP not in reservedWordsFromOtherCommands:
+        if nameCP not in globals()["aliasesCopypasts"] and nameCP not in reservedWordsFromOtherCommands:
 
-            await Bot_Copypast.addcpCommand(ctx, nameCP, textCP)
+            await Bot_Copypast.addcpCommand(ctx, nameCP, textCP, pathToCSV="files/copypast.csv")
 
             # update aliases after add new copypast
-            dictCopypasts = getDictFromCsv('files/copypast.csv')
-            aliasesCopypasts = list(dictCopypasts.keys())
-            update_aliases(_copypast, nameCP)
+            update_aliases(_copypast, [nameCP], "update")
 
         else:
             await ctx.send("Essa copypast **já existe** ou usou um **nome reservado de outro comando**.")
 
 
+# Handle Missing Argument for addcp
 @addcp.error
 async def addcp_error(ctx, error):
 
     if isinstance(error, commands.MissingRequiredArgument):
         await ctx.send("Faltou um argumento.\nExemplo: -addcp __teste__ __isso é teste de exemplo__.")
         ctx.handled_in_local = True
+
+
+@bot.command()
+async def deletecp(ctx, nameCP: str):
+
+    await Bot_Copypast.deletecpCommand(ctx, nameCP, update_aliases, _copypast, pathToCSV="files/copypast.csv")
+    updateVarAliasesCopypasts()
 
 
 # Command stats - infos bot
@@ -171,17 +190,19 @@ async def shutdown(ctx):
     await Bot_OwnerCommands.shutdownCommand(ctx, bot)
 
 
-# Errors
-@bot.event
-async def on_command_error(ctx, error):
+# # Errors
+# @bot.event
+# async def on_command_error(ctx, error):
 
-    if hasattr(ctx, "handled_in_local"):
-        if ctx.handled_in_local == True:
-            return
+#     if hasattr(ctx, "handled_in_local"):
+#         if ctx.handled_in_local == True:
+#             return
 
-    if isinstance(error, (commands.MissingPermissions, commands.BotMissingPermissions)):
-        await ctx.send(error)
+#     if isinstance(error, (commands.MissingPermissions, commands.BotMissingPermissions)):
+#         await ctx.send(error)
     
+#     else:
+#         print(error)
 
 # Run
 bot.run(TOKEN)

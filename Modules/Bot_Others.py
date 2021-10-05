@@ -48,13 +48,17 @@ async def statsCommand(ctx, bot):
     await ctx.send(embed=embedStatus)
 
 
-def makeEmbedSubHelp(embedHelp, subHelpDict, subHelpFromUser):
+def makeEmbedSubHelp(embedHelp, subHelpDict, subHelpFromUser, botId):
     
     embedHelp.clear_fields()
     embedHelp.title = "Ajuda - " + subHelpFromUser.title()
     embedHelp.description = subHelpDict[subHelpFromUser]["contentEmbed"]["description"] 
 
     for field in subHelpDict[subHelpFromUser]["contentEmbed"]["fields"]:
+
+        if field["value"] == "urlInviteBot":
+            field["value"] = f"[Convite](https://discord.com/api/oauth2/authorize?client_id={botId}&permissions=8&scope=bot%20applications.commands)"
+
         embedHelp.add_field(name=field["name"], value=field["value"], inline=field["inline"])
 
     return embedHelp
@@ -73,7 +77,7 @@ async def new(ctx, bot, subHelpFromUser, loadJsonFile, botId):
 
     if subHelpFromUser != None and subHelpFromUser.lower() in list(subHelpDict.keys()):
         
-        embedHelp = makeEmbedSubHelp(embedHelp, subHelpDict, subHelpFromUser)
+        embedHelp = makeEmbedSubHelp(embedHelp, subHelpDict, subHelpFromUser, botId)
 
     else:
     
@@ -125,7 +129,7 @@ async def new(ctx, bot, subHelpFromUser, loadJsonFile, botId):
             await interaction.respond(type=6)
 
             subHelpFromUser = interaction.values[0]
-            embedHelp = makeEmbedSubHelp(embedHelp, subHelpDict, subHelpFromUser)
+            embedHelp = makeEmbedSubHelp(embedHelp, subHelpDict, subHelpFromUser, botId)
             await msgHelp.edit(embed=embedHelp)
         
         except asyncio.TimeoutError:
