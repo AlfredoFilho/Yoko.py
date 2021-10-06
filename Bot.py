@@ -26,7 +26,6 @@ TOKEN = dataConfiguration["token"]
 # Create tmp folder if not exists
 Path("tmp").mkdir(parents=True, exist_ok=True)
 
-
 @bot.event
 async def on_ready():
 
@@ -43,7 +42,7 @@ async def on_ready():
 @bot.command(aliases=['ajuda'])
 async def help(ctx, subHelp : str=None):
 
-    await Bot_Others.new(ctx, bot, subHelp, getJsonData, bot.user.id)
+    await Bot_Others.helpCommand(ctx, bot, subHelp, getJsonData, bot.user.id)
 
 
 # Command convert image JPG to PNG
@@ -161,6 +160,7 @@ async def addcp_error(ctx, error):
         ctx.handled_in_local = True
 
 
+# Command to delete a copypast
 @bot.command()
 async def deletecp(ctx, nameCP: str):
 
@@ -168,6 +168,7 @@ async def deletecp(ctx, nameCP: str):
     updateVarAliasesCopypasts()
 
 
+# Handle Missing Argument for deletecp
 @deletecp.error
 async def deletecp_error(ctx, error):
 
@@ -198,6 +199,7 @@ async def shutdown(ctx):
     await Bot_OwnerCommands.shutdownCommand(ctx, bot)
 
 
+# Command to choose a random from the user list in Anilist
 @bot.command()
 async def anilist(ctx, usernameAnilist: str, fromList: str):
 
@@ -208,6 +210,7 @@ async def anilist(ctx, usernameAnilist: str, fromList: str):
         await Bot_AnimeList.anilistCommand(ctx, usernameAnilist, fromList.upper())
 
 
+# Handle error Missing Argument and Bad Argument for command anilist
 @anilist.error
 async def anilist_error(ctx, error):
 
@@ -221,11 +224,19 @@ async def anilist_error(ctx, error):
         ctx.handled_in_local = True
 
 
+# Send a txt file with words for verification
 @bot.command()
 @commands.bot_has_permissions(attach_files=True)
 async def crasepq(ctx):
 
     await Bot_Subtitles.crasepqCommand(ctx)
+
+
+@bot.command()
+@commands.bot_has_permissions(attach_files=True)
+async def cleanN(ctx):
+
+    await Bot_Subtitles.cleanN(ctx)
 
 
 # Errors

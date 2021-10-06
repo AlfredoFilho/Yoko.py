@@ -60,8 +60,7 @@ def makeEmbedSubHelp(embedHelp, subHelpDict, subHelpFromUser, botId):
 
     return embedHelp
 
-async def new(ctx, bot, subHelpFromUser, loadJsonFile, botId):
-
+async def helpCommand(ctx, bot, subHelpFromUser, loadJsonFile, botId):
 
     subHelpDict = loadJsonFile("files/helpDescriptions.json")
     
