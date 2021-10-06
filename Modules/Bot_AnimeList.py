@@ -1,7 +1,6 @@
 #!/bin/bash/python3
 #coding: utf-8
 
-
 import json
 import random
 import discord

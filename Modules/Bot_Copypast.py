@@ -52,19 +52,15 @@ async def listCpsCommand(ctx, dictCopypasts):
 
             for cpast in list(dictCopypasts.keys())[beginLimitRangeCopypastDisplayInDiscord: len(dictCopypasts.keys())]:
 
-                data = base64.b64decode(
-                    bytes(dictCopypasts[cpast].encode())).decode("utf-8")
-                listEmbedsCopypasts[el].add_field(
-                    name='-' + cpast, value=data[0:15].lower() + '...')
+                data = base64.b64decode(bytes(dictCopypasts[cpast].encode())).decode("utf-8")
+                listEmbedsCopypasts[el].add_field(name='-' + cpast, value=data[0:15].lower() + '...')
 
         else:
 
             for cpast in list(dictCopypasts.keys())[beginLimitRangeCopypastDisplayInDiscord:limitRangeCopypastDisplayInDiscord]:
 
-                data = base64.b64decode(
-                    bytes(dictCopypasts[cpast].encode())).decode("utf-8")
-                listEmbedsCopypasts[el].add_field(
-                    name='-' + cpast, value=data[0:15].lower() + '...')
+                data = base64.b64decode(bytes(dictCopypasts[cpast].encode())).decode("utf-8")
+                listEmbedsCopypasts[el].add_field(name='-' + cpast, value=data[0:15].lower() + '...')
 
             beginLimitRangeCopypastDisplayInDiscord = beginLimitRangeCopypastDisplayInDiscord + 25
             limitRangeCopypastDisplayInDiscord = limitRangeCopypastDisplayInDiscord + 25

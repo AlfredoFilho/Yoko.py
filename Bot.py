@@ -1,5 +1,6 @@
 #!/bin/bash/python3
 #coding: utf-8
+
 import discord
 import pandas as pd
 from pathlib import Path
@@ -218,6 +219,13 @@ async def anilist_error(ctx, error):
     if isinstance(error, commands.BadArgument):
         await ctx.send("Essa opção não existe. Opções: `anime` e `manga`.\nEx: `-anilist Bayon anime`")
         ctx.handled_in_local = True
+
+
+@bot.command()
+@commands.bot_has_permissions(attach_files=True)
+async def crasepq(ctx):
+
+    await Bot_Subtitles.crasepqCommand(ctx)
 
 
 # Errors
