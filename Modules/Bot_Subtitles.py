@@ -69,6 +69,21 @@ def cleanNewLineAndMultipleSpace(line):
     return line
 
 
+def getTimeStartLine(line):
+    '''
+    Example:
+    Dialogue: 10,0:03:17.93,0:03:21.26,Default,,0,0,0,,
+
+    Return:
+    time: 0:03:17.93
+    '''
+
+    line = line.split(",")
+    time = line[1]
+
+    return time
+
+
 async def crasepqCommand(ctx):
 
     if not ctx.message.attachments:
@@ -111,7 +126,7 @@ async def crasepqCommand(ctx):
         f = discord.File(pathToNewFile, filename="crasepq.txt")
         embedFile = discord.Embed(
             title='Linhas com _crases_ e _porquês_',
-            description="Lembrete: esse comando verifica os style **Default** e **Italics**",
+            description="Lembrete: Esse comando verifica os style **Default** e **Italics**",
             colour=discord.Colour(0xFFFF00)
         )
 
@@ -122,7 +137,7 @@ async def crasepqCommand(ctx):
         os.remove(pathToNewFile)
 
 
-async def cleanN(ctx):
+async def cleanNCommand(ctx):
 
     if not ctx.message.attachments:
         await ctx.send("Não encontrei um arquivo na sua mensagem.\nEnvie o arquivo juntamente com o comando.")
@@ -170,8 +185,82 @@ async def cleanN(ctx):
                 title = 'Legenda sem \\N e duplo espaço',
                 description = '''
                 Número de linhas alteradas: **''' + str(countLineChanges)+ '**' + '''
-                 As alterações são feitas nos style **Default** e **Italics**''',
+                As alterações são feitas nos style **Default** e **Italics**''',
                 colour = discord.Colour(0xFFFF00)
+        )
+
+        await ctx.reply(embed=embedFile)
+        await ctx.send(file=f)
+
+        os.remove(pathToOriginalFile)
+        os.remove(pathToNewFile)
+
+
+async def punctuationCommand(ctx):
+    
+    punctuation = ['"','?','!','...','.',',','…',':','“','”', '-', '—', '–']
+
+    if not ctx.message.attachments:
+        await ctx.send("Não encontrei um arquivo na sua mensagem.\nEnvie o arquivo juntamente com o comando.")
+
+    else:
+
+        urlFileFromDiscord = ctx.message.attachments[-1].url
+
+        pathToNewFile = "tmp/punctuation-" + str(random.randint(100000, 1000000)) + ".txt"
+        pathToOriginalFile = "tmp/texts-" + str(random.randint(100000, 1000000)) + ".txt"
+
+        myfile = requests.get(urlFileFromDiscord, allow_redirects=True)
+        open(pathToOriginalFile, 'wb').write(myfile.content)
+
+        countLineWithoutPunctuation = 0
+
+        with codecs.open(pathToOriginalFile, "r", encoding="utf8") as readOriginalFile:
+            linesOriginalFile = readOriginalFile.readlines()
+
+            with codecs.open(pathToNewFile, "w", encoding="utf8") as writeNewFile:
+                for i in range(len(linesOriginalFile)):
+                    line = linesOriginalFile[i]
+                    if 'Dialogue' in line:
+                        if 'Default' in line or 'Italics' in line:
+                            
+                            beforeNineComman, afterNineComman = splitNineComman(line)
+
+                            lineWithoutTags = cleanTags(afterNineComman.strip())
+
+                            if lineWithoutTags[-1] not in punctuation:
+                                
+                                countLineWithoutPunctuation += 1
+                                
+                                nextLine = linesOriginalFile[i + 1]
+
+                                if 'Default' in line or 'Italics' in nextLine:
+                                    
+                                    nextLineBeforeNineComman, nextLineAfterNineComman = splitNineComman(nextLine)
+
+                                    timeLine = getTimeStartLine(beforeNineComman)
+                                    timeNextLine = getTimeStartLine(nextLineBeforeNineComman)
+
+                                    contentLine = "\nLinha sem: " + timeLine + " - " + afterNineComman
+                                    contentNextLine = "Próx linha: " + timeNextLine + " - " + nextLineAfterNineComman
+
+                                    writeNewFile.write(contentLine)
+                                    writeNewFile.write(contentNextLine)
+                                
+                                else:
+                                    contentLine = "\nLinha sem: " + timeLine + " - " + afterNineComman
+                                    writeNewFile.write(contentLine)
+
+            writeNewFile.close()
+        readOriginalFile.close()
+
+        f = discord.File(pathToNewFile, filename="Linhas_Sem_Ponto.txt")
+        embedFile = discord.Embed(
+            title='Linhas sem pontuação no final',
+            description = '''
+            Número de linhas sem pontuação: **''' + str(countLineWithoutPunctuation)+ '**' + '''
+            Lembrete: Esse comando verifica os style **Default** e **Italics**''',
+            colour=discord.Colour(0xFFFF00)
         )
 
         await ctx.reply(embed=embedFile)

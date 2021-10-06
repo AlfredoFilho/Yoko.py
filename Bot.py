@@ -236,7 +236,14 @@ async def crasepq(ctx):
 @commands.bot_has_permissions(attach_files=True)
 async def cleanN(ctx):
 
-    await Bot_Subtitles.cleanN(ctx)
+    await Bot_Subtitles.cleanNCommand(ctx)
+
+
+@bot.command()
+@commands.bot_has_permissions(attach_files=True)
+async def ponto(ctx):
+
+    await Bot_Subtitles.punctuationCommand(ctx)
 
 
 # Errors
