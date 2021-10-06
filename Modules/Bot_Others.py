@@ -31,7 +31,7 @@ async def purgeCommand(ctx, quant):
 
 async def statsCommand(ctx, bot):
 
-    infoBot = await bot.application_info()
+    # infoBot = await bot.application_info()
 
     pythonVersion = platform.python_version()
     discordPyVersion = discord.__version__
@@ -55,9 +55,6 @@ def makeEmbedSubHelp(embedHelp, subHelpDict, subHelpFromUser, botId):
     embedHelp.description = subHelpDict[subHelpFromUser]["contentEmbed"]["description"] 
 
     for field in subHelpDict[subHelpFromUser]["contentEmbed"]["fields"]:
-
-        if field["value"] == "urlInviteBot":
-            field["value"] = f"[Convite](https://discord.com/api/oauth2/authorize?client_id={botId}&permissions=8&scope=bot%20applications.commands)"
 
         embedHelp.add_field(name=field["name"], value=field["value"], inline=field["inline"])
 
@@ -138,4 +135,3 @@ async def new(ctx, bot, subHelpFromUser, loadJsonFile, botId):
             await msgHelp.edit(embed=embedHelp, components=[])
             
             break
-    

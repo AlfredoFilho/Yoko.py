@@ -9,7 +9,6 @@ from discord_components import DiscordComponents
 from Modules import Bot_Games
 from Modules import Bot_Images
 from Modules import Bot_Others
-from Modules import Bot_Errors
 from Modules import Bot_Copypast
 from Modules import Bot_Subtitles
 from Modules import Bot_AnimeList
@@ -106,7 +105,7 @@ async def _copypast(ctx):
     await Bot_Copypast.copypastCommand(ctx, globals()["dictCopypasts"])
 
 
-# Command listacp - list of copypasts availabre from files/copypast.csv
+# Command listacp - list of copypasts available from files/copypast.csv
 @bot.command(aliases=['listacp'])
 async def listarcp(ctx):
 
@@ -168,6 +167,14 @@ async def deletecp(ctx, nameCP: str):
     updateVarAliasesCopypasts()
 
 
+@deletecp.error
+async def deletecp_error(ctx, error):
+
+    if isinstance(error, commands.MissingRequiredArgument):
+        await ctx.send("Você esqueceu o nome da copypast. Ex: `-deletecp teste`.")
+        ctx.handled_in_local = True
+
+
 # Command stats - infos bot
 @bot.command()
 async def stats(ctx):
@@ -190,19 +197,42 @@ async def shutdown(ctx):
     await Bot_OwnerCommands.shutdownCommand(ctx, bot)
 
 
-# # Errors
-# @bot.event
-# async def on_command_error(ctx, error):
+@bot.command()
+async def anilist(ctx, usernameAnilist: str, fromList: str):
 
-#     if hasattr(ctx, "handled_in_local"):
-#         if ctx.handled_in_local == True:
-#             return
+    if fromList.upper() != "ANIME" and fromList.upper() != "MANGA":
+        raise commands.BadArgument
 
-#     if isinstance(error, (commands.MissingPermissions, commands.BotMissingPermissions)):
-#         await ctx.send(error)
+    else:
+        await Bot_AnimeList.anilistCommand(ctx, usernameAnilist, fromList.upper())
+
+
+@anilist.error
+async def anilist_error(ctx, error):
+
+    if isinstance(error, commands.MissingRequiredArgument):
+        await ctx.send("Você esqueceu algum parâmetro. Ex de uso: `-anilist Bayon anime`")
+        ctx.handled_in_local = True
+
+
+    if isinstance(error, commands.BadArgument):
+        await ctx.send("Essa opção não existe. Opções: `anime` e `manga`.\nEx: `-anilist Bayon anime`")
+        ctx.handled_in_local = True
+
+
+# Errors
+@bot.event
+async def on_command_error(ctx, error):
+
+    if hasattr(ctx, "handled_in_local"):
+        if ctx.handled_in_local == True:
+            return
+
+    if isinstance(error, (commands.MissingPermissions, commands.BotMissingPermissions)):
+        await ctx.send(error)
     
-#     else:
-#         print(error)
+    else:
+        print(error)
 
 # Run
 bot.run(TOKEN)
