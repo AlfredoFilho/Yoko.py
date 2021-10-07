@@ -224,7 +224,7 @@ async def anilist_error(ctx, error):
         ctx.handled_in_local = True
 
 
-# Send a txt file with words for verification
+# Sends a txt file with words for verification
 @bot.command()
 @commands.bot_has_permissions(attach_files=True)
 async def crasepq(ctx):
@@ -232,6 +232,7 @@ async def crasepq(ctx):
     await Bot_Subtitles.crasepqCommand(ctx)
 
 
+# Sends a text file without line breaks and correcting multiple spaces
 @bot.command()
 @commands.bot_has_permissions(attach_files=True)
 async def cleanN(ctx):
@@ -239,11 +240,20 @@ async def cleanN(ctx):
     await Bot_Subtitles.cleanNCommand(ctx)
 
 
+# Sends a txt file with lines without punctuation
 @bot.command()
 @commands.bot_has_permissions(attach_files=True)
 async def ponto(ctx):
 
     await Bot_Subtitles.punctuationCommand(ctx)
+
+
+# Sends a txt file with only the text of each line of the subtitle
+@bot.command()
+@commands.bot_has_permissions(attach_files=True)
+async def clean(ctx):
+
+    await Bot_Subtitles.cleanCommand(ctx)
 
 
 # Errors

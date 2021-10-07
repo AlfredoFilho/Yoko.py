@@ -228,6 +228,7 @@ async def punctuationCommand(ctx):
 
                             lineWithoutTags = cleanTags(afterNineComman.strip())
 
+                            # Check if last character is punctuation
                             if lineWithoutTags[-1] not in punctuation:
                                 
                                 countLineWithoutPunctuation += 1
@@ -260,6 +261,52 @@ async def punctuationCommand(ctx):
             description = '''
             Número de linhas sem pontuação: **''' + str(countLineWithoutPunctuation)+ '**' + '''
             Lembrete: Esse comando verifica os style **Default** e **Italics**''',
+            colour=discord.Colour(0xFFFF00)
+        )
+
+        await ctx.reply(embed=embedFile)
+        await ctx.send(file=f)
+
+        os.remove(pathToOriginalFile)
+        os.remove(pathToNewFile)
+
+
+async def cleanCommand(ctx):
+
+    if not ctx.message.attachments:
+        await ctx.send("Não encontrei um arquivo na sua mensagem.\nEnvie o arquivo juntamente com o comando.")
+
+    else:
+
+        urlFileFromDiscord = ctx.message.attachments[-1].url
+
+        pathToNewFile = "tmp/clean-" + str(random.randint(100000, 1000000)) + ".txt"
+        pathToOriginalFile = "tmp/texts-" + str(random.randint(100000, 1000000)) + ".txt"
+
+        myfile = requests.get(urlFileFromDiscord, allow_redirects=True)
+        open(pathToOriginalFile, 'wb').write(myfile.content)
+
+        with codecs.open(pathToOriginalFile, "r", encoding="utf8") as readOriginalFile:
+            linesOriginalFile = readOriginalFile.readlines()
+
+            with codecs.open(pathToNewFile, "w", encoding="utf8") as writeNewFile:
+                for line in linesOriginalFile:
+                    if 'Dialogue' in line:
+                        if 'Default' in line or 'Italics' in line:
+
+                            beforeNineComman, afterNineComman = splitNineComman(line)
+                            cleanLine = cleanNewLineAndMultipleSpace(afterNineComman)
+                            cleanLine = cleanTags(cleanLine)
+
+                            writeNewFile.write(cleanLine)
+
+            writeNewFile.close()
+        readOriginalFile.close()
+
+        f = discord.File(pathToNewFile, filename="Legenda_Clean.txt")
+        embedFile = discord.Embed(
+            title='Só o texto dos style Default e Italics',
+            description="Lembrete: Esse comando verifica os style **Default** e **Italics**",
             colour=discord.Colour(0xFFFF00)
         )
 
