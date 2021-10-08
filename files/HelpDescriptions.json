@@ -1,0 +1,156 @@
+{
+    "animelist": {
+        "descriptionSelect": "Randômico da sua lista no Anilist",
+        "idEmojiSelect": 892147824660189184,
+        "contentEmbed": {
+            "description": "Bot escolhe um anime ou mangá randômico da lista no Anilist",
+            "fields": [
+                {
+                    "name": "Random anime",
+                    "value": "```-anilist usuário anime```",
+                    "inline": "False"
+                },
+                {
+                    "name": "Random manga",
+                    "value": "```-anilist usuário manga```",
+                    "inline": "False"
+                },
+                {
+                    "name": "Exemplo",
+                    "value": "`-anilist Bayon anime`",
+                    "inline": "False"
+                }
+            ]
+        }
+    },
+    "copypasta": {
+        "descriptionSelect": "Enviar copypasta",
+        "idEmojiSelect": 894614814456954900,
+        "contentEmbed": {
+            "description": "Adicionar ou enviar copypastas",
+            "fields": [
+                {
+                    "name": "Lista das copypastas disponíveis",
+                    "value": "```-listacp```",
+                    "inline": "False"
+                },
+                {
+                    "name": "Adicionar uma copypasta",
+                    "value": "```-addcp nome texto\nEx: -addcp xx xxxxxxxxxx```",
+                    "inline": "False"
+                },
+                {
+                    "name": "Aviso",
+                    "value": "`As copypastas são públicas, em qualquer serve poderá usar`",
+                    "inline": "False"
+                }
+            ]
+        }
+    },
+    "imagens": {
+        "descriptionSelect": "Manipular imagens",
+        "idEmojiSelect": 892160355567038524,
+        "contentEmbed": {
+            "description": "Comandos para manipulação de imagens",
+            "fields": [
+                {
+                    "name": "PNG para JPG",
+                    "value": "```-tojpg```",
+                    "inline": "True"
+                },
+                {
+                    "name": "JPG para PNG",
+                    "value": "```-tojpg```",
+                    "inline": "True"
+                },
+                {
+                    "name": "Aviso",
+                    "value": "`Envie o comando juntamente com o upload da imagem.`",
+                    "inline": "False"
+                }
+            ]
+        }
+    },
+    "jogos": {
+        "descriptionSelect": "Alguns jogos",
+        "idEmojiSelect": 892159932995108924,
+        "contentEmbed": {
+            "description": "Alguns jogos para desafiar o bot.",
+            "fields": [
+                {
+                    "name": "Pedra Papel Tesoura",
+                    "value": "```-ppt```",
+                    "inline": "True"
+                }
+            ]
+        }
+    },
+    "legendas": {
+        "descriptionSelect": "Manipular legendas",
+        "idEmojiSelect": 892171256877682768,
+        "contentEmbed": {
+            "description": "Manipulação de legendas ASS - Styles `Default` e `Italics`.",
+            "fields": [
+                {
+                    "name": "Devolve um txt só com o texto",
+                    "value": "```-clean```",
+                    "inline": "False"
+                },
+                {
+                    "name": "Retira os \\N e corrige duplo espaço",
+                    "value": "```-cleanN```",
+                    "inline": "False"
+                },
+                {
+                    "name": "Correção ortográfica",
+                    "value": "```-word```",
+                    "inline": "False"
+                },
+                {
+                    "name": "Linhas com crase e porquês",
+                    "value": "```-crasepq```",
+                    "inline": "True"
+                },
+                {
+                    "name": "Linhas que terminam sem alguma pontuação",
+                    "value": "```-ponto```",
+                    "inline": "False"
+                },
+                {
+                    "name": "Aviso",
+                    "value": "`Envie o comando juntamente com o upload da legenda.`",
+                    "inline": "False"
+                }
+            ]
+        }
+    },
+    "outros": {
+        "descriptionSelect": "Outros comandos",
+        "idEmojiSelect": 892175186122649662,
+        "contentEmbed": {
+            "description": "Manipulação de legendas ASS - Styles `Default` e `Italics`.",
+            "fields": [
+                {
+                    "name": "Pingar algum usuário a cada 30sg",
+                    "value": "```-startping @usuário```",
+                    "inline": "False"
+                },
+                {
+                    "name": "Latência do bot",
+                    "value": "```-ping```",
+                    "inline": "True"
+                },
+                {
+                    "name": "Algunas infos sobre o bot",
+                    "value": "```-stats```",
+                    "inline": "True"
+                },
+                {
+                    "name": "Apagar mensagens",
+                    "value": "```-purge *quantidade*```",
+                    "inline": "False"
+                }
+            ]
+        }
+    }
+}

@@ -315,3 +315,7 @@ async def cleanCommand(ctx):
 
         os.remove(pathToOriginalFile)
         os.remove(pathToNewFile)
+
+async def wordCommand(ctx, AllWordsPortuguese):
+
+    await ctx.send("Teste")

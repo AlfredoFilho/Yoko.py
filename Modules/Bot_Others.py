@@ -62,7 +62,7 @@ def makeEmbedSubHelp(embedHelp, subHelpDict, subHelpFromUser, botId):
 
 async def helpCommand(ctx, bot, subHelpFromUser, loadJsonFile, botId):
 
-    subHelpDict = loadJsonFile("files/helpDescriptions.json")
+    subHelpDict = loadJsonFile("files/HelpDescriptions.json")
     
     embedHelp = discord.Embed(
         colour=discord.Colour(0xFF0059)

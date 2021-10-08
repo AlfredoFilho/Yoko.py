@@ -7,6 +7,8 @@ from pathlib import Path
 from discord.ext import commands, tasks
 from discord_components import DiscordComponents
 
+# Local import
+from Modules.Trie import Trie
 from Modules import Bot_Games
 from Modules import Bot_Images
 from Modules import Bot_Others
@@ -14,7 +16,7 @@ from Modules import Bot_Copypast
 from Modules import Bot_Subtitles
 from Modules import Bot_AnimeList
 from Modules import Bot_OwnerCommands
-from Modules.getFiles import getJsonData, getDictFromCsv
+from Modules.GetFiles import getJsonData, getDictFromCsv
 
 
 bot = commands.Bot(command_prefix=';', help_command=None)
@@ -26,10 +28,12 @@ TOKEN = dataConfiguration["token"]
 # Create tmp folder if not exists
 Path("tmp").mkdir(parents=True, exist_ok=True)
 
+AllWordsPortuguese = Trie()
+
 @bot.event
 async def on_ready():
 
-    # iniciarBanco()
+    await initDatabase()
 
     print('---------------------')
     print('       ONLINE        ')
@@ -87,13 +91,13 @@ async def rps(ctx):
     await Bot_Games.rpsCommand(ctx, bot)
 
 
-# Command copypast - send a copypast from files/copypast.csv
+# Command copypast - send a copypast from files/DataCopypast.csv
 dictCopypasts = None
 aliasesCopypasts = None
 
 def updateVarAliasesCopypasts():
 
-    globals()["dictCopypasts"] = getDictFromCsv(pathToCsv='files/copypast.csv', nameKey="nameCP", nameValue="textCP")
+    globals()["dictCopypasts"] = getDictFromCsv(pathToCsv='files/DataCopypast.csv', nameKey="nameCP", nameValue="textCP")
     globals()["aliasesCopypasts"] = list(dictCopypasts.keys())
 
 updateVarAliasesCopypasts()
@@ -105,7 +109,7 @@ async def _copypast(ctx):
     await Bot_Copypast.copypastCommand(ctx, globals()["dictCopypasts"])
 
 
-# Command listacp - list of copypasts available from files/copypast.csv
+# Command listacp - list of copypasts available from files/DataCopypast.csv
 @bot.command(aliases=['listacp'])
 async def listarcp(ctx):
 
@@ -142,7 +146,7 @@ async def addcp(ctx, nameCP, *, textCP):
 
         if nameCP not in globals()["aliasesCopypasts"] and nameCP not in reservedWordsFromOtherCommands:
 
-            await Bot_Copypast.addcpCommand(ctx, nameCP, textCP, pathToCSV="files/copypast.csv")
+            await Bot_Copypast.addcpCommand(ctx, nameCP, textCP, pathToCSV="files/DataCopypast.csv")
 
             # update aliases after add new copypast
             update_aliases(_copypast, [nameCP], "update")
@@ -164,7 +168,7 @@ async def addcp_error(ctx, error):
 @bot.command()
 async def deletecp(ctx, nameCP: str):
 
-    await Bot_Copypast.deletecpCommand(ctx, nameCP, update_aliases, _copypast, pathToCSV="files/copypast.csv")
+    await Bot_Copypast.deletecpCommand(ctx, nameCP, update_aliases, _copypast, pathToCSV="files/DataCopypast.csv")
     updateVarAliasesCopypasts()
 
 
@@ -256,6 +260,26 @@ async def clean(ctx):
     await Bot_Subtitles.cleanCommand(ctx)
 
 
+async def initDatabase():
+    '''
+    Get all words in media/AllPortugueseWords.txt for use in command "word" (spell check)
+    '''    
+
+    with open('files/AllPortugueseWords.txt', 'r', encoding='utf-8') as fileWords:
+        lines = fileWords.readlines()
+
+        for word in lines:
+            AllWordsPortuguese.add(word.replace('\n', ''))
+
+
+# Sends a txt file with the words that were misspelled / don't exist
+@bot.command()
+@commands.bot_has_permissions(attach_files=True)
+async def word(ctx):
+
+    await Bot_Subtitles.wordCommand(ctx, AllWordsPortuguese)
+
+
 # Errors
 @bot.event
 async def on_command_error(ctx, error):
@@ -269,6 +293,7 @@ async def on_command_error(ctx, error):
     
     else:
         print(error)
+
 
 # Run
 bot.run(TOKEN)
