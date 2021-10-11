@@ -19,7 +19,7 @@ from Modules import Bot_OwnerCommands
 from Modules.GetFiles import getJsonData, getDictFromCsv
 
 
-bot = commands.Bot(command_prefix=';', help_command=None)
+bot = commands.Bot(command_prefix='-', help_command=None)
 DiscordComponents(bot)
 
 dataConfiguration = getJsonData("configuration.json")
@@ -39,7 +39,7 @@ async def on_ready():
     print('       ONLINE        ')
     print('---------------------\n')
 
-    await bot.change_presence(status=discord.Status.online, activity=discord.Game(';ajuda'))
+    await bot.change_presence(status=discord.Status.online, activity=discord.Game('-ajuda'))
 
 
 # Command help
@@ -269,7 +269,7 @@ async def initDatabase():
         lines = fileWords.readlines()
 
         for word in lines:
-            AllWordsPortuguese.add(word.replace('\n', ''))
+            AllWordsPortuguese.add(word.strip())
 
 
 # Sends a txt file with the words that were misspelled / don't exist

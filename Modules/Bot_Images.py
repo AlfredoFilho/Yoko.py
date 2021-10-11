@@ -54,8 +54,8 @@ Lembrete: -tojpg converte PNG para JPG
             # Send image to channel
             f = discord.File(pathToImageJPG, filename="imageJPG.jpg")
             embedImagem = discord.Embed(
-                title='Imagem em JPG',
-                description='_Os comandos podem ser usados juntos com o envio do arquivo._',
+                title='Comando -tojpg',
+                description='_Imagem em JPG._',
                 colour=discord.Colour(0xFF007F)
             )
 
@@ -134,8 +134,8 @@ Lembrete: -topng converte JPG para PNG
                 # Send image to chat
                 f = discord.File(pathToImagePNG, filename="imagePNG.png")
                 embedImagem = discord.Embed(
-                    title='Imagem em PNG',
-                    description='_Os comandos podem ser usados juntos com o envio do arquivo._',
+                title='Comando -topng',
+                description='_Imagem em PNG._',
                     colour=discord.Colour(0x5BFD22)
                 )
 
