@@ -1,6 +1,7 @@
 #!/bin/bash/python3
 #coding: utf-8
 
+import os
 import sys
 import discord
 from pathlib import Path
@@ -21,25 +22,12 @@ intents.members = True
 bot = commands.Bot(command_prefix='-', help_command=None, intents=intents)
 DiscordComponents(bot)
 
-Cogs = [
-    "Cogs.Events",
-    "Cogs.HelpCommand",
-    "Cogs.GamesCommands",
-    "Cogs.OwnerCommands",
-    "Cogs.ImagesCommands",
-    "Cogs.OthersCommands",
-    "Cogs.SubtitlesCommands",
-    "Cogs.AnimeListCommands",
-    "Cogs.CopypastaCommands"
-]
-
-for cog in Cogs:
-    bot.load_extension(cog)
-
+# Set some variables to use in other commands
 bot.pathToCSVCopypastas = "files/DataCopypast.csv"
 bot.pathToJSONHelpDescriptions = "files/HelpDescriptions.json"
 bot.dataConfiguration = getJsonData("configuration.json")
 bot.AllWordsPortuguese = Trie()
+bot.startpingTasks = {}
 
 # Get all words in files/AllPortugueseWords.txt for use in command "word" (Cogs.SubtitlesCommands)
 with open('files/AllPortugueseWords.txt', 'r', encoding='utf-8') as fileWords:
@@ -48,6 +36,7 @@ with open('files/AllPortugueseWords.txt', 'r', encoding='utf-8') as fileWords:
     for word in lines:
         bot.AllWordsPortuguese.add(word.strip())
 
+# Check that all configs in configuration.json have been filled
 for key in bot.dataConfiguration.keys():
     if not bot.dataConfiguration[key]:
         print(f"Please, fill the required field -> {key} <- in configuration.json for all commands to work.")
@@ -55,6 +44,13 @@ for key in bot.dataConfiguration.keys():
         print("To get the other data, activate the Developer Mode and right click on your profile or channel.\n---- User Settings > Advanced > Developer Mode")
         sys.exit()
 
-# Run
-TOKEN = bot.dataConfiguration["token"]
-bot.run(TOKEN)
+# Load Cogs
+for file in sorted(os.listdir("Cogs")):
+    if file.endswith(".py"):   
+
+        name = file[:-3]
+        bot.load_extension(f"Cogs.{name}")
+
+        print(f"Cog {name} loaded")
+
+bot.run(bot.dataConfiguration["token"])
