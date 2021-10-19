@@ -99,7 +99,7 @@ class Events(commands.Cog):
             return
         
         else:
-            print('--- Unhandled error for the user - To see the full error, uncomment (remove "#") from line 107 in Cogs.Events.py ---')
+            print('\n--- Unhandled error for the user - To see the full error, uncomment (remove "#") from line 107 in Cogs.Events.py ---')
             print(str(ctx.message.guild) + " - ID: " + str(ctx.message.guild.id))
             print("    " + str(ctx.message.author) + " - ID: " + str(ctx.message.author.id))
             print("        Command: " + ctx.invoked_with + " -> Error: " + str(error) + "\n")
