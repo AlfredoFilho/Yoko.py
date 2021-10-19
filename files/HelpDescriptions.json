@@ -1,18 +1,18 @@
 {
     "animelist": {
-        "descriptionSelect": "Randômico da sua lista no Anilist",
+        "descriptionSelect": "Random from your Anilist list",
         "idEmojiSelect": 892147824660189184,
         "contentEmbed": {
-            "description": "Bot escolhe um anime ou mangá randômico da lista no Anilist",
+            "description": "Bot chooses a random anime or manga from the list on Anilist",
             "fields": [
                 {
                     "name": "Random anime",
-                    "value": "```-anilist usuário anime```",
+                    "value": "```-anilist user anime```",
                     "inline": "False"
                 },
                 {
                     "name": "Random manga",
-                    "value": "```-anilist usuário manga```",
+                    "value": "```-anilist user manga```",
                     "inline": "False"
                 },
                 {
@@ -24,62 +24,62 @@
         }
     },
     "copypasta": {
-        "descriptionSelect": "Enviar copypasta",
+        "descriptionSelect": "Send copypasta",
         "idEmojiSelect": 894614814456954900,
         "contentEmbed": {
-            "description": "Adicionar ou enviar copypastas",
+            "description": "Add or send copypastas",
             "fields": [
                 {
-                    "name": "Lista das copypastas disponíveis",
-                    "value": "```-listacp```",
+                    "name": "List of copypastas available",
+                    "value": "```-listcp```",
                     "inline": "False"
                 },
                 {
-                    "name": "Adicionar uma copypasta",
-                    "value": "```-addcp nome texto\nEx: -addcp xx xxxxxxxxxx```",
+                    "name": "Add an copypasta",
+                    "value": "```-addcp name text\nEx: -addcp xx xxxxxxxxxx```",
                     "inline": "False"
                 },
                 {
-                    "name": "Aviso",
-                    "value": "`As copypastas são públicas, em qualquer serve poderá usar`",
+                    "name": "Warning",
+                    "value": "`Copypastas are public, on any server you can use`",
                     "inline": "False"
                 }
             ]
         }
     },
-    "imagens": {
-        "descriptionSelect": "Manipular imagens",
+    "images": {
+        "descriptionSelect": "Manipulate images",
         "idEmojiSelect": 892160355567038524,
         "contentEmbed": {
-            "description": "Comandos para manipulação de imagens",
+            "description": "Image manipulation commands",
             "fields": [
                 {
-                    "name": "PNG para JPG",
+                    "name": "PNG to JPG",
                     "value": "```-tojpg```",
                     "inline": "True"
                 },
                 {
-                    "name": "JPG para PNG",
+                    "name": "JPG to PNG",
                     "value": "```-tojpg```",
                     "inline": "True"
                 },
                 {
-                    "name": "Aviso",
-                    "value": "`Envie o comando juntamente com o upload da imagem.`",
+                    "name": "Early warning",
+                    "value": "`Send the command along with the image upload.`",
                     "inline": "False"
                 }
             ]
         }
     },
-    "jogos": {
-        "descriptionSelect": "Alguns jogos",
+    "games": {
+        "descriptionSelect": "Some games",
         "idEmojiSelect": 892159932995108924,
         "contentEmbed": {
-            "description": "Alguns jogos para desafiar o bot.",
+            "description": "Some games to challenge the bot.",
             "fields": [
                 {
-                    "name": "Pedra Papel Tesoura",
-                    "value": "```-ppt```",
+                    "name": "Rock Paper Scissors",
+                    "value": "```-rps```",
                     "inline": "True"
                 }
             ]
@@ -124,30 +124,30 @@
             ]
         }
     },
-    "outros": {
-        "descriptionSelect": "Outros comandos",
+    "others": {
+        "descriptionSelect": "Other commands",
         "idEmojiSelect": 892175186122649662,
         "contentEmbed": {
-            "description": "Manipulação de legendas ASS - Styles `Default` e `Italics`.",
+            "description": "Other commands.",
             "fields": [
                 {
-                    "name": "Pingar algum usuário a cada 30sg",
-                    "value": "```-startping @usuário```",
+                    "name": "Ping a member every 30sg",
+                    "value": "```-startping @member```",
                     "inline": "False"
                 },
                 {
-                    "name": "Latência do bot",
+                    "name": "Latency bot",
                     "value": "```-ping```",
                     "inline": "True"
                 },
                 {
-                    "name": "Algunas infos sobre o bot",
+                    "name": "Some info about the bot",
                     "value": "```-stats```",
                     "inline": "True"
                 },
                 {
-                    "name": "Apagar mensagens",
-                    "value": "```-purge *quantidade*```",
+                    "name": "Delete messages",
+                    "value": "```-purge *quant*```",
                     "inline": "False"
                 }
             ]
