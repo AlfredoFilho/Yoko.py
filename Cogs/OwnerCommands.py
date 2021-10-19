@@ -1,6 +1,8 @@
 #!/bin/bash/python3
 #coding: utf-8
 
+import os
+import pprint
 from discord.ext import commands
 
 
@@ -11,7 +13,7 @@ class OwnerCommands(commands.Cog):
 
 
     # Command to take the bot off a server
-    @commands.command()
+    @commands.command(hidden=True)
     @commands.is_owner()
     @commands.guild_only()
     async def leave(self, ctx, guild_id):
@@ -21,7 +23,7 @@ class OwnerCommands(commands.Cog):
 
 
     # Command to shutdown the bot
-    @commands.command()
+    @commands.command(hidden=True)
     @commands.is_owner()
     @commands.guild_only()
     async def shutdown(self, ctx):
@@ -36,7 +38,7 @@ class OwnerCommands(commands.Cog):
 
 
     # Print all servers and owners (in terminal / cmd)
-    @commands.command()
+    @commands.command(hidden=True)
     @commands.is_owner()
     @commands.guild_only()
     async def listservers(self, ctx):
@@ -66,6 +68,46 @@ class OwnerCommands(commands.Cog):
             serversAndOwner = serversAndOwner + "Server name: " + serverName + " Server ID: " + serverID + " <-> Owner tag: " + serverOwner + " Owner ID: " + serverOwnerID + "\n"
 
         print(serversAndOwner)
+    
+
+    # Print tasks running on -startping command
+    @commands.command(hidden=True)
+    @commands.is_owner()
+    async def printTasks(self, ctx):
+
+        pprint.pprint(self.bot.startpingTasks)
+
+
+    # Reload Cogs
+    @commands.command(hidden=True)
+    @commands.is_owner()
+    async def reloadcogs(self, ctx):
+        
+        # Cancel all tasks from -startping command before reloading Cogs
+        if self.bot.startpingTasks:
+            if self.bot.startpingTasks["servers"]:
+                for server in self.bot.startpingTasks["servers"].keys():
+                    if self.bot.startpingTasks["servers"][server]:
+                        for channel in self.bot.startpingTasks["servers"][server]["channels"].keys():
+                            if self.bot.startpingTasks["servers"][server]["channels"][channel]:
+                                if self.bot.startpingTasks["servers"][server]["channels"][channel]["users"]:
+                                    for user in self.bot.startpingTasks["servers"][server]["channels"][channel]["users"].keys():
+                                        self.bot.startpingTasks["servers"][server]["channels"][channel]["users"][user]["task"].cancel()
+
+                                        channelToSendTheNotice = self.bot.get_channel(int(channel))
+                                        await channelToSendTheNotice.send("The **-startping** on this channel was disabled because the Bot restarted.")
+        
+        self.bot.startpingTasks = {}
+
+        # Reload
+        for file in sorted(os.listdir("Cogs")):
+            if file.endswith(".py"): 
+
+                name = file[:-3]
+                self.bot.unload_extension(f"Cogs.{name}")
+                self.bot.load_extension(f"Cogs.{name}")
+
+                print(f"Cog {name} reloaded")
 
 
 def setup(bot):
