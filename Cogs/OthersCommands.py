@@ -1,25 +1,18 @@
 #!/bin/bash/python3
 #coding: utf-8
 
-import pprint
 import sys
-import json
 import asyncio
 import discord
 import platform
-from discord.ext import commands, tasks
 from discord_components import *
-
-# Local import
-sys.path.append("..")
-from Modules.GetFiles import getJsonData
+from discord.ext import commands, tasks
 
 
 class OthersCommands(commands.Cog):
     
     def __init__(self, bot):
         self.bot = bot
-        self.startpingTasks = {}
 
 
     # Command ping - latency the bot
@@ -105,9 +98,9 @@ class OthersCommands(commands.Cog):
 
         serverName, serverId, channelName, channelId = self.getInfosFromCtx(ctx)
 
-        self.startpingTasks["servers"][serverId] = {}
-        self.startpingTasks["servers"][serverId]["serverName"] = serverName
-        self.startpingTasks["servers"][serverId]["channels"] = {}
+        self.bot.startpingTasks["servers"][serverId] = {}
+        self.bot.startpingTasks["servers"][serverId]["serverName"] = serverName
+        self.bot.startpingTasks["servers"][serverId]["channels"] = {}
 
         await self.addTaskFromChannel(ctx, member, task, contentMessage)
 
@@ -116,9 +109,9 @@ class OthersCommands(commands.Cog):
 
         serverName, serverId, channelName, channelId = self.getInfosFromCtx(ctx)
 
-        self.startpingTasks["servers"][serverId]["channels"][channelId] = {}
-        self.startpingTasks["servers"][serverId]["channels"][channelId]["channelName"] = channelName
-        self.startpingTasks["servers"][serverId]["channels"][channelId]["users"] = {}
+        self.bot.startpingTasks["servers"][serverId]["channels"][channelId] = {}
+        self.bot.startpingTasks["servers"][serverId]["channels"][channelId]["channelName"] = channelName
+        self.bot.startpingTasks["servers"][serverId]["channels"][channelId]["users"] = {}
 
         await self.addTaskFromUser(ctx, member, task, contentMessage)
 
@@ -129,9 +122,9 @@ class OthersCommands(commands.Cog):
         userName = member.name
         userId = str(member.id)
 
-        self.startpingTasks["servers"][serverId]["channels"][channelId]["users"][userId] = {}
-        self.startpingTasks["servers"][serverId]["channels"][channelId]["users"][userId]["userName"] = userName
-        self.startpingTasks["servers"][serverId]["channels"][channelId]["users"][userId]["task"] = task
+        self.bot.startpingTasks["servers"][serverId]["channels"][channelId]["users"][userId] = {}
+        self.bot.startpingTasks["servers"][serverId]["channels"][channelId]["users"][userId]["userName"] = userName
+        self.bot.startpingTasks["servers"][serverId]["channels"][channelId]["users"][userId]["task"] = task
 
         await ctx.send("**30sg** delay. To disable: **-endping**")
         task.start(ctx, member, contentMessage)
@@ -145,12 +138,12 @@ class OthersCommands(commands.Cog):
         
         if locationForAdd == "channel":
 
-            await addTaskFromChannel(ctx, member, taskForAdd, contentMessage)
+            await self.addTaskFromChannel(ctx, member, taskForAdd, contentMessage)
 
         if locationForAdd == "server":
 
-            if not self.startpingTasks:
-                self.startpingTasks["servers"] = {}
+            if not self.bot.startpingTasks:
+                self.bot.startpingTasks["servers"] = {}
             await self.addTaskFromServer(ctx, member, taskForAdd, contentMessage)
 
 
@@ -166,11 +159,11 @@ class OthersCommands(commands.Cog):
 
         t = tasks.loop(seconds=30)(self.loopPing)
 
-        if self.startpingTasks:
-            if serverId in self.startpingTasks["servers"]:
-                if channelId in self.startpingTasks["servers"][serverId]["channels"]:
+        if self.bot.startpingTasks:
+            if serverId in self.bot.startpingTasks["servers"]:
+                if channelId in self.bot.startpingTasks["servers"][serverId]["channels"]:
                     
-                    listWithUserAlreadyCreated = [int(x) for x in self.startpingTasks["servers"][serverId]["channels"][channelId]["users"].keys()]
+                    listWithUserAlreadyCreated = [int(x) for x in self.bot.startpingTasks["servers"][serverId]["channels"][channelId]["users"].keys()]
                     if int(userId) in listWithUserAlreadyCreated:
                         await ctx.send("It has already been created for that person on this channel.")
                     else:
@@ -181,12 +174,6 @@ class OthersCommands(commands.Cog):
                 await self.addTask(ctx, member, "server", t, contentMessage)
         else:
             await self.addTask(ctx, member, "server", t, contentMessage)
-
-
-    @commands.command()
-    async def printTasks(self, ctx):
-
-        pprint.pprint(self.startpingTasks)
 
 
     @commands.command()
@@ -215,8 +202,8 @@ class OthersCommands(commands.Cog):
 
         serverName, serverId, channelName, channelId = self.getInfosFromCtx(ctx)
 
-        usersForDelete = self.startpingTasks["servers"][serverId]["channels"][channelId]["users"]
-        channelsForDelete = self.startpingTasks["servers"][serverId]["channels"]
+        usersForDelete = self.bot.startpingTasks["servers"][serverId]["channels"][channelId]["users"]
+        channelsForDelete = self.bot.startpingTasks["servers"][serverId]["channels"]
 
         dropdownEndping = await ctx.send(
                     "Select someone!",
@@ -239,22 +226,22 @@ class OthersCommands(commands.Cog):
 
             if str(interaction.user.id) != idUserFromTask:
                 
-                userSelected = self.startpingTasks["servers"][serverId]["channels"][channelId]["users"][str(idUserFromTask)]
+                userSelected = self.bot.startpingTasks["servers"][serverId]["channels"][channelId]["users"][str(idUserFromTask)]
                 
                 await interaction.respond(type=6)
                 await dropdownEndping.edit(content=f"Desativado para {userSelected['userName']}.", components=[])
 
                 # Cancel task
-                self.startpingTasks["servers"][serverId]["channels"][channelId]["users"][str(idUserFromTask)]["task"].cancel()
+                self.bot.startpingTasks["servers"][serverId]["channels"][channelId]["users"][str(idUserFromTask)]["task"].cancel()
 
                 if len(usersForDelete.keys()) > 1:
-                    del self.startpingTasks["servers"][serverId]["channels"][channelId]["users"][str(idUserFromTask)]
+                    del self.bot.startpingTasks["servers"][serverId]["channels"][channelId]["users"][str(idUserFromTask)]
                 
                 else:
                     if len(channelsForDelete.keys()) == 1 and len(usersForDelete.keys()) == 1:
-                        del self.startpingTasks["servers"][serverId]
+                        del self.bot.startpingTasks["servers"][serverId]
                     else:
-                        del self.startpingTasks["servers"][serverId]["channels"][channelId]
+                        del self.bot.startpingTasks["servers"][serverId]["channels"][channelId]
 
             else:
                 await ctx.send(f"{interaction.user.name}, you cannot disable it for yourself.")
@@ -269,14 +256,14 @@ class OthersCommands(commands.Cog):
     @commands.guild_only()
     async def endping(self, ctx):
 
-        if not self.startpingTasks:
+        if not self.bot.startpingTasks:
             await ctx.send("There is no **-startping** running on this channel.")
         
         else:
             serverName, serverId, channelName, channelId = self.getInfosFromCtx(ctx)
             
-            if serverId in self.startpingTasks["servers"]:
-                if channelId in self.startpingTasks["servers"][serverId]["channels"]:
+            if serverId in self.bot.startpingTasks["servers"]:
+                if channelId in self.bot.startpingTasks["servers"][serverId]["channels"]:
                     await self.deleteTask(ctx)
                 else:
                     await ctx.send("There is no **-startping** running on this channel.")
