@@ -9,7 +9,7 @@ from discord_components import *
 
 # Local import
 sys.path.append("..")
-from Modules.GetFiles import getJsonData
+from Utils.GetFiles import getJsonData
 
 
 class HelpCommand(commands.Cog):
@@ -67,7 +67,7 @@ class HelpCommand(commands.Cog):
 
             embedHelp.add_field(name="**<:linkIcon:892131991636541451> Link!:**",
             value=f'''
-            [Invite](https://discord.com/api/oauth2/authorize?client_id={self.bot.user.id}&permissions=8&scope=bot%20applications.commands)
+            [Invite]({discord.utils.oauth_url(client_id=self.bot.user.id, permissions=discord.Permissions.all())})
             ''')
 
             embedHelp.add_field(name="<:globeIcon:892174454388588657> Change language", value="In development", inline=False)
