@@ -92,12 +92,17 @@ class OwnerCommands(commands.Cog):
                             if self.bot.startpingTasks["servers"][server]["channels"][channel]:
                                 if self.bot.startpingTasks["servers"][server]["channels"][channel]["users"]:
                                     for user in self.bot.startpingTasks["servers"][server]["channels"][channel]["users"].keys():
+
+                                        # Cancel task
                                         self.bot.startpingTasks["servers"][server]["channels"][channel]["users"][user]["task"].cancel()
 
                                         channelToSendTheNotice = self.bot.get_channel(int(channel))
                                         await channelToSendTheNotice.send("The **-startping** on this channel was disabled because the Bot restarted.")
         
         self.bot.startpingTasks = {}
+
+        # Clear terminal / cmd
+        os.system('cls' if os.name == 'nt' else 'clear')
 
         # Reload
         for file in sorted(os.listdir("Cogs")):
@@ -108,6 +113,10 @@ class OwnerCommands(commands.Cog):
                 self.bot.load_extension(f"Cogs.{name}")
 
                 print(f"Cog {name} reloaded")
+        
+        print('---------------------')
+        print('       ONLINE        ')
+        print('---------------------\n')
 
 
 def setup(bot):
