@@ -16,8 +16,7 @@ from Modules.GetFiles import getJsonData, getDictFromCsv
 # Create tmp folder if not exists
 Path("tmp").mkdir(parents=True, exist_ok=True)
 
-intents = discord.Intents.default()
-intents.members = True
+intents = discord.Intents.all()
 
 bot = commands.Bot(command_prefix='-', help_command=None, intents=intents)
 DiscordComponents(bot)
