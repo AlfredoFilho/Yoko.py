@@ -8,7 +8,7 @@ from discord.ext import commands
 
 # Local import
 sys.path.append("..")
-from Modules.GetFiles import getJsonData
+from Utils.GetFiles import getJsonData
 
 
 class Events(commands.Cog):
@@ -29,8 +29,16 @@ class Events(commands.Cog):
 
     @commands.Cog.listener()
     async def on_guild_join(self, guild):
+
+        to_send = next((
+            chan for chan in sorted(guild.channels, key=lambda x: x.position)
+            if chan.permissions_for(guild.me).send_messages and isinstance(chan, discord.TextChannel)
+        ), None)
+
+        if to_send:
+            await to_send.send("Hello, my prefix is: **-**\nUse -help to see commands.")
         
-        channelLog = self.bot.get_channel(int(self.dataConfiguration["channelIdForLogCommands"]))
+        channelLog = self.bot.get_channel(int(self.bot.dataConfiguration["channelIdForLogCommands"]))
         
         await channelLog.send(f"---- New guild join ----\n **Server:** {guild.name}.\n **Owner:** <@{guild.owner_id}>")
     
@@ -39,17 +47,11 @@ class Events(commands.Cog):
 
         if not isinstance(ctx.channel, discord.channel.DMChannel):
                 
-            commandInvoked = ''
             datetimeCommandInvoked = str(datetime.now().strftime('%d/%m/%Y - %H:%M:%S'))
             serverCommandInvoked = str(ctx.message.guild)
             serverIdCommandInvoked = str(ctx.message.guild.id)
             authorCommandInvoked = str(ctx.message.author)
             authorIdCommandInvoked =  str(ctx.message.author.id)
-
-            if len(ctx.args) > 2:
-                commandInvoked = '-' + str(ctx.invoked_with) + " " + str(ctx.args[2])
-            else:
-                commandInvoked = '-' + str(ctx.invoked_with)
 
             embedLog = discord.Embed()
 
@@ -61,7 +63,7 @@ class Events(commands.Cog):
                 embedLog.colour = discord.Colour(0xFF0000)
 
             embedLog.set_thumbnail(url=ctx.author.avatar_url)
-            embedLog.add_field(name='**Command**', value=f"{commandInvoked}", inline=False)
+            embedLog.add_field(name='**Command**', value=f"{ctx.message.clean_content}", inline=False)
             embedLog.add_field(name='**Server**', value=f"{serverCommandInvoked}")
             embedLog.add_field(name='**Server ID**', value=f"{serverIdCommandInvoked}")
             embedLog.add_field(name='**Date/Time**', value=f"{datetimeCommandInvoked}", inline=False)
@@ -91,6 +93,9 @@ class Events(commands.Cog):
             await ctx.send(error)
             return
 
+        elif isinstance(error, commands.CommandOnCooldown):
+            await ctx.send(error, delete_after=1.0)
+
         elif isinstance(error, commands.CommandNotFound):
             await self.createLog(ctx)
             return
@@ -104,7 +109,7 @@ class Events(commands.Cog):
             print("    " + str(ctx.message.author) + " - ID: " + str(ctx.message.author.id))
             print("        Command: " + ctx.invoked_with + " -> Error: " + str(error) + "\n")
             
-            # raise(error)
+            raise(error)
 
 
 def setup(bot):
