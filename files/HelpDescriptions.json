@@ -7,12 +7,12 @@
             "fields": [
                 {
                     "name": "Random anime",
-                    "value": "```-anilist user anime```",
+                    "value": "```-anilist <user> <anime>```",
                     "inline": "False"
                 },
                 {
                     "name": "Random manga",
-                    "value": "```-anilist user manga```",
+                    "value": "```-anilist <user> <manga>```",
                     "inline": "False"
                 },
                 {
@@ -75,12 +75,22 @@
         "descriptionSelect": "Some games",
         "idEmojiSelect": 892159932995108924,
         "contentEmbed": {
-            "description": "Some games to challenge the bot.",
+            "description": "Some games",
             "fields": [
                 {
                     "name": "Rock Paper Scissors",
                     "value": "```-rps```",
                     "inline": "True"
+                },
+                {
+                    "name": "Random Duck",
+                    "value": "```-duck```",
+                    "inline": "True"
+                },
+                {
+                    "name": "8ball - I answer for you",
+                    "value": "```-eightball <question>```",
+                    "inline": "False"
                 }
             ]
         }
@@ -147,7 +157,12 @@
                 },
                 {
                     "name": "Delete messages",
-                    "value": "```-purge *quant*```",
+                    "value": "```-purge <quant>```",
+                    "inline": "False"
+                },
+                {
+                    "name": "Reverse your message",
+                    "value": "```-reverse <message>```",
                     "inline": "False"
                 }
             ]
