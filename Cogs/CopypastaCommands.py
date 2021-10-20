@@ -12,7 +12,7 @@ from discord.ext import commands
 
 # Local import
 sys.path.append("..")
-from Modules.GetFiles import getDictFromCsv
+from Utils.GetFiles import getDictFromCsv
 
 
 # Get names copypastas to initialize command _copypasta
