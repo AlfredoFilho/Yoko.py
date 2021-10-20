@@ -269,6 +269,13 @@ class OthersCommands(commands.Cog):
                     await ctx.send("There is no **-startping** running on this channel.")
             else:
                 await ctx.send("There is no **-startping** running on this channel.") 
+    
+
+    @commands.command(aliases=["joinme", "join", "botinvite"])
+    @commands.guild_only()
+    async def invite(self, ctx):
+        """ Invite me to your server """
+        await ctx.send(f"**{ctx.author.name}**, use this URL to invite me\n<{discord.utils.oauth_url(client_id=self.bot.user.id, permissions=discord.Permissions.all())}>")
 
 
 def setup(bot):
