@@ -1,5 +1,5 @@
 {
     "token" : "",
-    "channelIdForLogCommands": "",
-    "channelIdForLogCommandsNotFound": ""
+    "webhook_id": "",
+    "webhook_token": ""
 }
