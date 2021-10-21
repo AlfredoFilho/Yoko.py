@@ -9,8 +9,8 @@ from discord.ext import commands
 from discord_components import DiscordComponents
 
 # Local import
-from Utils.Trie import Trie
-from Utils.GetFiles import getJsonData, getDictFromCsv
+from Utils.trie import Trie
+from Utils.getfiles import getJsonData, getDictFromCsv
 
 
 # Create tmp folder if not exists
