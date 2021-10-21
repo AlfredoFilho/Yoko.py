@@ -9,7 +9,7 @@ from discord_components import *
 
 # Local import
 sys.path.append("..")
-from Utils.GetFiles import getJsonData
+from Utils.getfiles import getJsonData
 
 
 class HelpCommand(commands.Cog):

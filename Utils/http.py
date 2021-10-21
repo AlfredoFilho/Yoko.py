@@ -1,6 +1,6 @@
 import aiohttp
 
-from Modules import cache
+from Utils import cache
 
 """
 From @AlexFlipnote
