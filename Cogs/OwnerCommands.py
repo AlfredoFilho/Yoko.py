@@ -109,10 +109,14 @@ class OwnerCommands(commands.Cog):
             if file.endswith(".py"): 
 
                 name = file[:-3]
-                self.bot.unload_extension(f"Cogs.{name}")
-                self.bot.load_extension(f"Cogs.{name}")
 
-                print(f"Cog {name} reloaded")
+                try:
+                    self.bot.reload_extension(f"Cogs.{name}")
+                    print(f"Cog {name} reloaded")
+                    
+                except commands.ExtensionNotLoaded:
+                    self.bot.load_extension(f"Cogs.{name}")
+                    print(f"Cog {name} loaded")
         
         print('---------------------')
         print('       ONLINE        ')
