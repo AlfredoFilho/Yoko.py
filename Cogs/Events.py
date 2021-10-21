@@ -2,13 +2,14 @@
 #coding: utf-8
 
 import sys
+import aiohttp
 import discord
 from datetime import datetime
 from discord.ext import commands
 
 # Local import
 sys.path.append("..")
-from Utils.GetFiles import getJsonData
+from Utils.getfiles import getJsonData
 
 
 class Events(commands.Cog):
@@ -38,9 +39,7 @@ class Events(commands.Cog):
         if to_send:
             await to_send.send("Hello, my prefix is: **-**\nUse -help to see commands.")
         
-        channelLog = self.bot.get_channel(int(self.bot.dataConfiguration["channelIdForLogCommands"]))
-        
-        await channelLog.send(f"---- New guild join ----\n **Server:** {guild.name}.\n **Owner:** <@{guild.owner_id}>")
+        print(f"---- New guild join ----\nServer: {guild.name}.\nOwner: {guild.owner}\n")
     
 
     async def createLog(self, ctx):
@@ -55,11 +54,9 @@ class Events(commands.Cog):
 
             embedLog = discord.Embed()
 
-            channelLog = self.bot.get_channel(int(self.bot.dataConfiguration["channelIdForLogCommands"]))
             embedLog.colour = discord.Colour(0x3CB043)
 
             if ctx.invoked_with not in list(self.bot.all_commands.keys()):
-                channelLog = self.bot.get_channel(int(self.bot.dataConfiguration["channelIdForLogCommandsNotFound"]))
                 embedLog.colour = discord.Colour(0xFF0000)
 
             embedLog.set_thumbnail(url=ctx.author.avatar_url)
@@ -71,7 +68,13 @@ class Events(commands.Cog):
             embedLog.add_field(name='**User ID**', value=f"{authorIdCommandInvoked}")
             embedLog.add_field(name='**Channel**', value=f"{ctx.message.channel.name}", inline=False)
 
-            await channelLog.send(embed=embedLog)
+            async with aiohttp.ClientSession() as session:
+                webhook = discord.Webhook.partial(
+                id=self.bot.dataConfiguration["webhook_id"],
+                token=self.bot.dataConfiguration["webhook_token"],
+                adapter=discord.AsyncWebhookAdapter(session)
+            )
+                await webhook.send(embed=embedLog)
 
 
     # Event for every command used
@@ -104,7 +107,7 @@ class Events(commands.Cog):
             return
         
         else:
-            print('\n--- Unhandled error for the user - To see the full error, uncomment (remove "#") from line 107 in Cogs.Events.py ---')
+            print('\n--- Unhandled error for the user - To see the full error, uncomment (remove "#") from line 115 in Cogs.Events.py ---')
             print(str(ctx.message.guild) + " - ID: " + str(ctx.message.guild.id))
             print("    " + str(ctx.message.author) + " - ID: " + str(ctx.message.author.id))
             print("        Command: " + ctx.invoked_with + " -> Error: " + str(error) + "\n")
