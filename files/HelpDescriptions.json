@@ -142,7 +142,7 @@
             "fields": [
                 {
                     "name": "Ping a member every 30sg",
-                    "value": "```-startping @member```",
+                    "value": "```-startping member text```",
                     "inline": "False"
                 },
                 {
