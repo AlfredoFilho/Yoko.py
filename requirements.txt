@@ -8,7 +8,7 @@ discord-components==2.1.2
 discord.py==1.7.3
 idna==3.3
 multidict==5.2.0
-numpy==1.21.2
+numpy==1.21.3
 pandas==1.3.4
 Pillow==8.4.0
 pypresence==4.2.0
