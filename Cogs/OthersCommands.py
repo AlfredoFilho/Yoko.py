@@ -229,7 +229,7 @@ class OthersCommands(commands.Cog):
                 userSelected = self.bot.startpingTasks["servers"][serverId]["channels"][channelId]["users"][str(idUserFromTask)]
                 
                 await interaction.respond(type=6)
-                await dropdownEndping.edit(content=f"Desativado para {userSelected['userName']}.", components=[])
+                await dropdownEndping.edit(content=f"Disabled for {userSelected['userName']}.", components=[])
 
                 # Cancel task
                 self.bot.startpingTasks["servers"][serverId]["channels"][channelId]["users"][str(idUserFromTask)]["task"].cancel()
