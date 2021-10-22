@@ -10,7 +10,7 @@ from discord_components import DiscordComponents
 
 # Local import
 from Utils.trie import Trie
-from Utils.getfiles import getJsonData, getDictFromCsv
+from Utils.getfiles import getJsonData
 
 
 # Create tmp folder if not exists
@@ -25,6 +25,7 @@ DiscordComponents(bot)
 bot.pathToCSVCopypastas = "files/DataCopypast.csv"
 bot.pathToJSONHelpDescriptions = "files/HelpDescriptions.json"
 bot.dataConfiguration = getJsonData("configuration.json")
+bot.blacklist = getJsonData("files/Blacklist.json")
 bot.AllWordsPortuguese = Trie()
 bot.startpingTasks = {}
 
