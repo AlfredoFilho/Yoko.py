@@ -26,7 +26,7 @@ class Events(commands.Cog):
         print('---------------------\n')
 
         await self.bot.change_presence(status=discord.Status.online, activity=discord.Game('-help'))
-
+    
 
     @commands.Cog.listener()
     async def on_guild_join(self, guild):
@@ -35,11 +35,20 @@ class Events(commands.Cog):
             chan for chan in sorted(guild.channels, key=lambda x: x.position)
             if chan.permissions_for(guild.me).send_messages and isinstance(chan, discord.TextChannel)
         ), None)
-
-        if to_send:
-            await to_send.send("Hello, my prefix is: **-**\nUse -help to see commands.")
         
-        print(f"---- New guild join ----\nServer: {guild.name}.\nOwner: {guild.owner}\n")
+        blacklistGuilds = self.bot.blacklist["guilds"]
+        blacklistGuilds = [int(g) for g in blacklistGuilds if g.isdigit()]
+        
+        if guild.id in blacklistGuilds:
+            if to_send:
+                await to_send.send("Your server is banned.")
+            await guild.leave()
+
+        else:
+            if to_send:
+                await to_send.send("Hello, my prefix is: **-**\nUse -help to see commands.")
+            
+            print(f"---- New guild join ----\nServer: {guild.name}.\nOwner: {guild.owner}\n")
     
 
     async def createLog(self, ctx):
@@ -107,12 +116,12 @@ class Events(commands.Cog):
             return
         
         else:
-            print('\n--- Unhandled error for the user - To see the full error, uncomment (remove "#") from line 115 in Cogs.Events.py ---')
+            print('\n--- Unhandled error for the user - To see the full error, uncomment (remove "#") from line 124 in Cogs.Events.py ---')
             print(str(ctx.message.guild) + " - ID: " + str(ctx.message.guild.id))
             print("    " + str(ctx.message.author) + " - ID: " + str(ctx.message.author.id))
             print("        Command: " + ctx.invoked_with + " -> Error: " + str(error) + "\n")
             
-            raise(error)
+            #raise(error)
 
 
 def setup(bot):
